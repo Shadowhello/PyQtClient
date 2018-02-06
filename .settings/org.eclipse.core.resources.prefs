@@ -1,4 +1,9 @@
 eclipse.preferences.version=1
 encoding//Libraries/Config.py=utf-8
+encoding//Libraries/Widgets/ContentWidget.py=utf-8
+encoding//Libraries/Widgets/MainWidget.py=utf-8
+encoding//Libraries/Widgets/MenuWidget.py=utf-8
+encoding//Libraries/Widgets/SearchWidget.py=utf-8
 encoding//Libraries/Widgets/WebView.py=utf-8
 encoding//tmp/\u767B\u5F55\u6388\u6743.py=utf-8
+encoding/Client.py=utf-8

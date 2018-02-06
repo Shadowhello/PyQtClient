@@ -1,0 +1,28 @@
+/*主窗口*/
+MainWidget {
+    background: #27ae61;
+    border-radius: 10px; /*圆角*/
+}
+
+/*标题栏中最小化,最大化,还原,关闭按钮*/
+#minimumButton,#maximumButton,#normalButton,#closeButton {
+    min-width: 30px;
+    max-width: 30px;
+    min-height: 30px;
+    max-height: 30px;
+    font-family: "webdings"; /*字体*/
+    border: none; /*无边框*/
+    background: transparent; /*背景透明*/
+}
+#minimumButton:hover,#maximumButton:hover,#normalButton:hover {
+    color: white; /*文字白色*/
+    background-color: rgba(255, 255, 255, 100); /*带透明度白色*/
+}
+#closeButton:hover {
+    color: white;
+    background-color: rgb(212, 64, 39); /*红色*/
+}
+#minimumButton {qproperty-text: "0";}
+#maximumButton {qproperty-text: "1";}
+#normalButton {qproperty-text: "2";}
+#closeButton {qproperty-text: "r";}
