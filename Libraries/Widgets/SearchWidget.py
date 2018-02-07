@@ -9,8 +9,8 @@ Created on 2018年2月6日
 @file: Libraries.Widgets.SearchWidget
 @description: 
 '''
-from PyQt5.QtGui import QIcon
-from PyQt5.QtWidgets import QLineEdit, QAction
+from PyQt5.QtCore import Qt
+from PyQt5.QtWidgets import QLineEdit, QWidget, QHBoxLayout, QPushButton
 
 
 __Author__ = "By: Irony.\"[讽刺]\nQQ: 892768447\nEmail: 892768447@qq.com"
@@ -18,21 +18,31 @@ __Copyright__ = "Copyright (c) 2018 Irony.\"[讽刺]"
 __Version__ = "Version 1.0"
 
 
-class SearchWidget(QLineEdit):
+class SearchWidget(QWidget):
 
     def __init__(self, *args, **kwargs):
         super(SearchWidget, self).__init__(*args, **kwargs)
+        self.setAttribute(Qt.WA_StyledBackground,True)
+        self._initView()
+
+    def _initView(self):
+        '''初始化布局'''
+        layout = QHBoxLayout(self, spacing=0)
+        layout.setContentsMargins(0, 0, 0, 0)
+        self._searchEdit = QLineEdit(self,objectName="searchEdit")
+        self._searchBtn = QPushButton(self,objectName="searchBtn")
+        layout.addWidget(self._searchEdit)
+        layout.addWidget(self._searchBtn)
 
 
 if __name__ == "__main__":
     import sys
     from PyQt5.QtWidgets import QApplication
+    from PyQt5.QtGui import QFontDatabase
     app = QApplication(sys.argv)
+    QFontDatabase.addApplicationFont("../../themes/default/font.ttf")
     app.setStyleSheet(open("../../themes/default/style.qss",
                            "rb").read().decode("utf-8"))
     w = SearchWidget()
-    w.addAction(QAction(QIcon("../../tmp/1.jpg"),
-                        "search", w), w.TrailingPosition)
-    w.setClearButtonEnabled(True)
     w.show()
     sys.exit(app.exec_())

@@ -11,7 +11,7 @@ Created on 2018年2月6日
 '''
 from PyQt5.QtCore import Qt
 from PyQt5.QtWidgets import QWidget, QVBoxLayout, QHBoxLayout, QSpacerItem,\
-    QSizePolicy, QPushButton
+    QSizePolicy, QPushButton, QProgressBar
 
 
 __Author__ = "By: Irony.\"[讽刺]\nQQ: 892768447\nEmail: 892768447@qq.com"
@@ -27,9 +27,11 @@ class MainWidget(QWidget):
         self.setAttribute(Qt.WA_StyledBackground, True)
         layout = QVBoxLayout(self, spacing=0)
         layout.setContentsMargins(0, 0, 0, 0)
-        #标题栏
+        # 标题栏
         self._initTitleBar()
-        #左侧菜单栏和右侧内容栏
+        # 进度条
+        self._initProgressBar()
+        # 左侧菜单栏和右侧内容栏
         self._initView()
 
     def _initTitleBar(self):
@@ -43,7 +45,12 @@ class MainWidget(QWidget):
         layout.addWidget(QPushButton("", self, objectName="normalButton"))
         layout.addWidget(QPushButton("", self, objectName="closeButton"))
         self.layout().addLayout(layout)
-    
+
+    def _initProgressBar(self):
+        '''进度条'''
+        self._progressBar = QProgressBar(self, textVisible=False)
+        self.layout().addWidget(self._progressBar)
+
     def _initView(self):
         '''左侧菜单栏和右侧内容栏'''
         layout = QHBoxLayout()
@@ -55,8 +62,11 @@ class MainWidget(QWidget):
 if __name__ == "__main__":
     import sys
     from PyQt5.QtWidgets import QApplication
+    from PyQt5.QtGui import QFontDatabase
     app = QApplication(sys.argv)
-    app.setStyleSheet(open("../../themes/default/style.qss","rb").read().decode("utf-8"))
+    QFontDatabase.addApplicationFont("../../themes/default/font.ttf")
+    app.setStyleSheet(open("../../themes/default/style.qss",
+                           "rb").read().decode("utf-8"))
     w = MainWidget()
     w.resize(800, 600)
     w.show()

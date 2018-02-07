@@ -9,8 +9,10 @@ Created on 2018年2月6日
 @file: Libraries.Widgets.MenuWidget
 @description: 
 '''
-from PyQt5.QtWidgets import QWidget, QGridLayout, QSpacerItem, QSizePolicy,\
-    QLabel, QLineEdit, QTreeWidget
+from PyQt5.QtWidgets import QWidget, QGridLayout, QSpacerItem, QSizePolicy, QTreeWidget
+
+from Libraries.Widgets.AvatarLabel import AvatarLabel
+from Libraries.Widgets.SearchWidget import SearchWidget
 
 
 __Author__ = "By: Irony.\"[讽刺]\nQQ: 892768447\nEmail: 892768447@qq.com"
@@ -33,11 +35,11 @@ class MenuWidget(QWidget):
         item = QSpacerItem(20, 20, QSizePolicy.Expanding, QSizePolicy.Minimum)
         # 头像
         layout.addItem(item, 0, 0)
-        layout.addWidget(QLabel("dff", self), 0, 1)
+        layout.addWidget(AvatarLabel("dff", self), 0, 1)
         layout.addItem(item, 0, 2)
         # 搜索框
         layout.addItem(item, 1, 0)
-        layout.addWidget(QLineEdit(self), 1, 1)
+        layout.addWidget(SearchWidget(self), 1, 1)
         layout.addItem(item, 1, 2)
         # 例子目录
         layout.addItem(item, 2, 0)
@@ -52,7 +54,9 @@ class MenuWidget(QWidget):
 if __name__ == "__main__":
     import sys
     from PyQt5.QtWidgets import QApplication
+    from PyQt5.QtGui import QFontDatabase
     app = QApplication(sys.argv)
+    QFontDatabase.addApplicationFont("../../themes/default/font.ttf")
     app.setStyleSheet(open("../../themes/default/style.qss",
                            "rb").read().decode("utf-8"))
     w = MenuWidget()

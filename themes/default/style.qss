@@ -10,7 +10,7 @@ MainWidget {
     max-width: 30px;
     min-height: 30px;
     max-height: 30px;
-    font-family: "webdings"; /*字体*/
+    font-family: "pyqtclient";
     border: none; /*无边框*/
     background: transparent; /*背景透明*/
 }
@@ -22,7 +22,63 @@ MainWidget {
     color: white;
     background-color: rgb(212, 64, 39); /*红色*/
 }
-#minimumButton {qproperty-text: "0";}
-#maximumButton {qproperty-text: "1";}
-#normalButton {qproperty-text: "2";}
-#closeButton {qproperty-text: "r";}
+#minimumButton {
+    qproperty-text: "\2100";
+}
+#maximumButton {
+    qproperty-text: "\2101";
+}
+#normalButton {
+    qproperty-text: "\2102";
+}
+#closeButton {
+    qproperty-text: "\2103";
+}
+
+/*菜单区域*/
+MenuWidget {
+    min-width: 260px;
+    max-width: 260px;
+}
+
+/*菜单栏上的圆形头像*/
+AvatarLabel {
+    min-width: 130px;
+    max-width: 130px;
+    min-height: 130px;
+    max-height: 130px;
+}
+
+/*搜索框区域*/
+SearchWidget {
+    height: 30px;
+    background-color: white;
+    border-radius: 15px;
+}
+#searchEdit {
+    width: 220px;
+    height: 30px;
+    border: none;
+    color: #666;
+    background: #fff;
+    outline: none;
+    padding-left: 10px;
+    padding-right: 5px;
+    border-top-left-radius: 15px;
+    border-bottom-left-radius: 15px;
+}
+#searchBtn {
+    width: 26px;
+    height: 26px;
+    border: none;
+    color: white;
+    background-color: rgb(39, 174, 97);
+    outline: none;
+    margin: 4px;
+    border-radius: 13px;
+    font-family: "pyqtclient";
+    qproperty-text: "\2104";
+}
+#searchBtn:hover {
+    background-color: rgb(232, 76, 61);
+}
