@@ -56,13 +56,14 @@ AvatarWidget {
 
 /*搜索框区域*/
 SearchWidget {
-    height: 30px;
+    min-height: 32px;
+    max-height: 32px;
     background-color: white;
     border-radius: 15px;
 }
 #searchEdit {
     width: 220px;
-    height: 30px;
+    height: 32px;
     border: none;
     color: #666;
     background: #fff;
@@ -73,8 +74,10 @@ SearchWidget {
     border-bottom-left-radius: 15px;
 }
 #searchBtn {
-    width: 26px;
-    height: 26px;
+    min-width: 26px;
+    max-width: 26px;
+    min-height: 26px;
+    max-height: 26px;
     border: none;
     color: white;
     background-color: rgb(39, 174, 97);
@@ -85,5 +88,11 @@ SearchWidget {
     qproperty-text: "\2104";
 }
 #searchBtn:hover {
-    background-color: rgb(232, 76, 61);
+    background-color: rgb(39, 150, 97);
+}
+
+/*右侧内容区域*/
+ContentWidget {
+    min-width: 400px;
+    background-color: rgb(208, 208, 208);
 }

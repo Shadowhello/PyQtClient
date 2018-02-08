@@ -13,6 +13,9 @@ from PyQt5.QtCore import Qt
 from PyQt5.QtWidgets import QWidget, QVBoxLayout, QHBoxLayout, QSpacerItem,\
     QSizePolicy, QPushButton, QProgressBar
 
+from Libraries.Widgets.ContentWidget import ContentWidget
+from Libraries.Widgets.MenuWidget import MenuWidget
+
 
 __Author__ = "By: Irony.\"[讽刺]\nQQ: 892768447\nEmail: 892768447@qq.com"
 __Copyright__ = "Copyright (c) 2018 Irony.\"[讽刺]"
@@ -54,8 +57,8 @@ class MainWidget(QWidget):
     def _initView(self):
         '''左侧菜单栏和右侧内容栏'''
         layout = QHBoxLayout()
-        layout.addWidget(QWidget(self))
-        layout.addWidget(QWidget(self))
+        layout.addWidget(MenuWidget(self))
+        layout.addWidget(ContentWidget(self))
         self.layout().addLayout(layout)
 
 

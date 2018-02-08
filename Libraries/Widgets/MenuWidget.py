@@ -9,7 +9,9 @@ Created on 2018年2月6日
 @file: Libraries.Widgets.MenuWidget
 @description: 
 '''
-from PyQt5.QtWidgets import QWidget, QGridLayout, QSpacerItem, QSizePolicy, QTreeWidget
+from PyQt5.QtCore import Qt
+from PyQt5.QtWidgets import QWidget, QGridLayout, QSpacerItem, QSizePolicy, QTreeWidget,\
+    QVBoxLayout, QHBoxLayout
 
 from Libraries.Widgets.AvatarWidget import AvatarWidget
 from Libraries.Widgets.SearchWidget import SearchWidget
@@ -28,27 +30,21 @@ class MenuWidget(QWidget):
         self._initView()
 
     def _initView(self):
-        layout = QGridLayout(self)
+        layout = QVBoxLayout(self)
         layout.setContentsMargins(20, 30, 20, 30)
-        layout.setHorizontalSpacing(0)
-        layout.setVerticalSpacing(20)
-        item = QSpacerItem(20, 20, QSizePolicy.Expanding, QSizePolicy.Minimum)
+        layout.setSpacing(20)
         # 头像
-        layout.addItem(item, 0, 0)
-        layout.addWidget(AvatarWidget(self), 0, 1)
-        layout.addItem(item, 0, 2)
+        hlayout = QHBoxLayout()
+        hlayout.addItem(QSpacerItem(
+            40, 20, QSizePolicy.Expanding, QSizePolicy.Minimum))
+        hlayout.addWidget(AvatarWidget(self))
+        hlayout.addItem(QSpacerItem(
+            40, 20, QSizePolicy.Expanding, QSizePolicy.Minimum))
+        layout.addLayout(hlayout,1)
         # 搜索框
-        layout.addItem(item, 1, 0)
-        layout.addWidget(SearchWidget(self), 1, 1)
-        layout.addItem(item, 1, 2)
-        # 例子目录
-        layout.addItem(item, 2, 0)
-        layout.addWidget(QTreeWidget(self), 2, 1)
-        layout.addItem(item, 2, 2)
-        #
-        layout.setRowStretch(0, 1)
-        layout.setRowStretch(1, 1)
-        layout.setRowStretch(2, 4)
+        layout.addWidget(SearchWidget(self),1)
+        # 目录
+        layout.addWidget(QTreeWidget(self),4)
 
 
 if __name__ == "__main__":
