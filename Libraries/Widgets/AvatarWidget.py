@@ -31,12 +31,12 @@ class AvatarWidget(QLabel):
         self._step = 45
         self._padding = 10
         self._image = ""
+        self._shadowColor = "#212121"
         self._pixmap = None
         self._direction = None    # clockwise 顺时针 anticlockwise 逆时针
         self._timer = QTimer(self, timeout=self.update)
         self._effect = QGraphicsDropShadowEffect(self)
         self._effect.setBlurRadius(self._padding * 2)
-        self._effect.setColor(QColor("#212121"))
         self._effect.setOffset(0, 0)
 
     def __del__(self):
@@ -89,7 +89,7 @@ class AvatarWidget(QLabel):
         else:
             painter.drawPixmap(QPointF(ph, ph), self._pixmap)
 #         painter.setPen(  # 边框圆圈
-#             QPen(QColor("#212121"), 5, Qt.SolidLine, Qt.RoundCap, Qt.RoundJoin))
+#             QPen(QColor(self._shadowColor), 5, Qt.SolidLine, Qt.RoundCap, Qt.RoundJoin))
 #         painter.drawRoundedRect(
 #             ph, ph, self._pixmap.width(),
 #             self._pixmap.height(), self._radius, self._radius)  # 画边框圆圈
@@ -100,6 +100,7 @@ class AvatarWidget(QLabel):
 
     def enterEvent(self, event):
         '''鼠标进入事件'''
+        self._effect.setColor(QColor(self._shadowColor))
         self._effect.setBlurRadius(self._padding * 2)
         self.setGraphicsEffect(self._effect)
         self._timer.stop()
@@ -145,8 +146,15 @@ class AvatarWidget(QLabel):
     def setPadding(self, padding):
         self._padding = padding
 
+    def getShadowColor(self)->str:
+        return self._shadowColor
+
+    def setShadowColor(self, color: str):
+        self._shadowColor = color
+
     image = pyqtProperty(str, getImage, setPixmap)
     padding = pyqtProperty(int, getPadding, setPadding)
+    shadowColor = pyqtProperty(str, getShadowColor, setShadowColor)
 
 
 if __name__ == "__main__":
@@ -164,6 +172,7 @@ if __name__ == "__main__":
         max-height: 200px;
         qproperty-padding: 10;
         background: transparent;
+        qproperty-shadowColor: #212121;
         qproperty-image: "../../tmp/1.jpg";
     }
     ''')
