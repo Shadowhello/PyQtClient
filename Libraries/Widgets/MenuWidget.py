@@ -11,7 +11,7 @@ Created on 2018年2月6日
 '''
 from PyQt5.QtWidgets import QWidget, QGridLayout, QSpacerItem, QSizePolicy, QTreeWidget
 
-from Libraries.Widgets.AvatarLabel import AvatarLabel
+from Libraries.Widgets.AvatarWidget import AvatarWidget
 from Libraries.Widgets.SearchWidget import SearchWidget
 
 
@@ -35,7 +35,7 @@ class MenuWidget(QWidget):
         item = QSpacerItem(20, 20, QSizePolicy.Expanding, QSizePolicy.Minimum)
         # 头像
         layout.addItem(item, 0, 0)
-        layout.addWidget(AvatarLabel("dff", self), 0, 1)
+        layout.addWidget(AvatarWidget(self), 0, 1)
         layout.addItem(item, 0, 2)
         # 搜索框
         layout.addItem(item, 1, 0)
