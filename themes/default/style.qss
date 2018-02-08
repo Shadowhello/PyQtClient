@@ -42,11 +42,16 @@ MenuWidget {
 }
 
 /*菜单栏上的圆形头像*/
-AvatarLabel {
+
+AvatarWidget {
     min-width: 130px;
-    max-width: 130px;
     min-height: 130px;
+    max-width: 130px;
     max-height: 130px;
+    qproperty-padding: 10;
+    background: transparent;
+    qproperty-shadowColor: #212121;
+    qproperty-image: "themes/default/images/avatar.jpg";
 }
 
 /*搜索框区域*/

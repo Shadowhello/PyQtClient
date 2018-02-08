@@ -22,26 +22,28 @@ class SearchWidget(QWidget):
 
     def __init__(self, *args, **kwargs):
         super(SearchWidget, self).__init__(*args, **kwargs)
-        self.setAttribute(Qt.WA_StyledBackground,True)
+        self.setAttribute(Qt.WA_StyledBackground, True)
         self._initView()
 
     def _initView(self):
         '''初始化布局'''
         layout = QHBoxLayout(self, spacing=0)
         layout.setContentsMargins(0, 0, 0, 0)
-        self._searchEdit = QLineEdit(self,objectName="searchEdit")
-        self._searchBtn = QPushButton(self,objectName="searchBtn")
+        self._searchEdit = QLineEdit(self, objectName="searchEdit")
+        self._searchBtn = QPushButton(self, objectName="searchBtn")
         layout.addWidget(self._searchEdit)
         layout.addWidget(self._searchBtn)
 
 
 if __name__ == "__main__":
     import sys
+    import os
+    os.chdir("../../")
     from PyQt5.QtWidgets import QApplication
     from PyQt5.QtGui import QFontDatabase
     app = QApplication(sys.argv)
-    QFontDatabase.addApplicationFont("../../themes/default/font.ttf")
-    app.setStyleSheet(open("../../themes/default/style.qss",
+    QFontDatabase.addApplicationFont("themes/default/font.ttf")
+    app.setStyleSheet(open("themes/default/style.qss",
                            "rb").read().decode("utf-8"))
     w = SearchWidget()
     w.show()

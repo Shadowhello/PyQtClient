@@ -159,24 +159,14 @@ class AvatarWidget(QLabel):
 
 if __name__ == "__main__":
     import sys
+    import os
+    os.chdir("../../")
     from PyQt5.QtWidgets import QApplication, QVBoxLayout
     app = QApplication(sys.argv)
-    app.setStyleSheet('''
-    QWidget {
-        background: white;
-    }
-    AvatarWidget {
-        min-width: 200px;
-        min-height: 200px;
-        max-width: 200px;
-        max-height: 200px;
-        qproperty-padding: 10;
-        background: transparent;
-        qproperty-shadowColor: #212121;
-        qproperty-image: "../../tmp/1.jpg";
-    }
-    ''')
-    parent = QWidget()
+    app.setStyleSheet(open("themes/default/style.qss",
+                           "rb").read().decode("utf-8"))
+    parent = QWidget(objectName="Widget",
+                     styleSheet="#Widget{background: white;}")
     layout = QVBoxLayout(parent)
     layout.setContentsMargins(20, 20, 20, 20)
     layout.addWidget(AvatarWidget())

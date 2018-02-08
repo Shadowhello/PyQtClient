@@ -61,11 +61,13 @@ class MainWidget(QWidget):
 
 if __name__ == "__main__":
     import sys
+    import os
+    os.chdir("../../")
     from PyQt5.QtWidgets import QApplication
     from PyQt5.QtGui import QFontDatabase
     app = QApplication(sys.argv)
-    QFontDatabase.addApplicationFont("../../themes/default/font.ttf")
-    app.setStyleSheet(open("../../themes/default/style.qss",
+    QFontDatabase.addApplicationFont("themes/default/font.ttf")
+    app.setStyleSheet(open("themes/default/style.qss",
                            "rb").read().decode("utf-8"))
     w = MainWidget()
     w.resize(800, 600)

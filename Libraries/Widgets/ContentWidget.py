@@ -10,7 +10,7 @@ Created on 2018年2月6日
 @description: 
 '''
 from PyQt5.QtCore import Qt
-from PyQt5.QtWidgets import QWidget, QVBoxLayout, QPushButton
+from PyQt5.QtWidgets import QWidget
 
 
 __Author__ = "By: Irony.\"[讽刺]\nQQ: 892768447\nEmail: 892768447@qq.com"
@@ -28,8 +28,12 @@ class ContentWidget(QWidget):
 
 if __name__ == "__main__":
     import sys
+    import os
+    os.chdir("../../")
     from PyQt5.QtWidgets import QApplication
     app = QApplication(sys.argv)
+    app.setStyleSheet(open("themes/default/style.qss",
+                           "rb").read().decode("utf-8"))
     w = ContentWidget()
     w.resize(800, 600)
     w.show()
