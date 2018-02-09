@@ -10,7 +10,9 @@ Created on 2018年2月6日
 @description: 
 '''
 from PyQt5.QtCore import Qt
-from PyQt5.QtWidgets import QLineEdit, QWidget, QHBoxLayout, QPushButton
+from PyQt5.QtWidgets import QLineEdit, QWidget, QHBoxLayout
+
+from Libraries.Widgets.RubberBandButton import RubberBandButton
 
 
 __Author__ = "By: Irony.\"[讽刺]\nQQ: 892768447\nEmail: 892768447@qq.com"
@@ -30,7 +32,7 @@ class SearchWidget(QWidget):
         layout = QHBoxLayout(self, spacing=0)
         layout.setContentsMargins(0, 0, 0, 0)
         self._searchEdit = QLineEdit(self, objectName="searchEdit")
-        self._searchBtn = QPushButton(self, objectName="searchBtn")
+        self._searchBtn = RubberBandButton(self, objectName="searchBtn")
         layout.addWidget(self._searchEdit)
         layout.addWidget(self._searchBtn)
 

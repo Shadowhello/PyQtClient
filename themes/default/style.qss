@@ -80,15 +80,13 @@ SearchWidget {
     max-height: 26px;
     border: none;
     color: white;
-    background-color: rgb(39, 174, 97);
+    qproperty-bgcolor: #27AE61;
     outline: none;
-    margin: 4px;
-    border-radius: 13px;
     font-family: "pyqtclient";
     qproperty-text: "\2104";
 }
 #searchBtn:hover {
-    background-color: rgb(39, 150, 97);
+    qproperty-bgcolor: #279661;
 }
 
 /*右侧内容区域*/

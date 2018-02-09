@@ -105,7 +105,7 @@ class AvatarWidget(QLabel):
         self.setGraphicsEffect(self._effect)
         self._timer.stop()
         self._direction = "clockwise"    # 顺时针旋转
-        self._timer.start(20)
+        self._timer.start(40)
 
     def leaveEvent(self, event):
         '''鼠标离开事件'''
@@ -113,7 +113,7 @@ class AvatarWidget(QLabel):
         self.setGraphicsEffect(self._effect)
         self._timer.stop()
         self._direction = "anticlockwise"    # 逆时针旋转
-        self._timer.start(20)
+        self._timer.start(40)
 
     def getImage(self)->str:
         return self._image
