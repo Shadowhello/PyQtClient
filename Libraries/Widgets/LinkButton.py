@@ -2,16 +2,17 @@
 # -*- coding: utf-8 -*-
 
 '''
-Created on 2018年2月8日
+Created on 2018年2月10日
 @author: Irony."[讽刺]
 @site: http://alyl.vip, http://orzorz.vip, https://coding.net/u/892768447, https://github.com/892768447
 @email: 892768447@qq.com
-@file: Libraries.Widgets.AvatarWidget
+@file: Libraries.Widgets.LinkButton
 @description: 
 '''
-from PyQt5.QtCore import Qt, QTimer, QPointF, pyqtSignal, pyqtProperty
-from PyQt5.QtGui import QPixmap, QPainter, QPainterPath, QColor
-from PyQt5.QtWidgets import QWidget, QGraphicsDropShadowEffect, QLabel
+from PyQt5.QtCore import QTimer, pyqtProperty, QRectF, Qt
+from PyQt5.QtGui import QColor
+from PyQt5.QtWidgets import QPushButton, QGraphicsDropShadowEffect, QWidget,\
+    QStylePainter, QStyleOptionButton, QStyle
 
 
 __Author__ = "By: Irony.\"[讽刺]\nQQ: 892768447\nEmail: 892768447@qq.com"
@@ -19,19 +20,15 @@ __Copyright__ = "Copyright (c) 2018 Irony.\"[讽刺]"
 __Version__ = "Version 1.0"
 
 
-class AvatarWidget(QLabel):
-
-    clicked = pyqtSignal()
+class LinkButton(QPushButton):
 
     def __init__(self, *args, **kwargs):
-        super(AvatarWidget, self).__init__(*args, **kwargs)
+        super(LinkButton, self).__init__(*args, **kwargs)
         self._rotate = 0
         self._radius = 0
         self._step = 45
         self._padding = 10
-        self._image = ""
-        self._shadowColor = "#212121"
-        self._pixmap = None
+        self._shadowColor = "#FFFFFF"
         self._direction = None    # clockwise 顺时针 anticlockwise 逆时针
         self._timer = QTimer(self, timeout=self.update)
         self._effect = QGraphicsDropShadowEffect(self)
@@ -39,7 +36,6 @@ class AvatarWidget(QLabel):
         self._effect.setOffset(0, 0)
 
     def __del__(self):
-        del self._pixmap
         self.stop()
 
     def stop(self):
@@ -57,7 +53,7 @@ class AvatarWidget(QLabel):
                 self._direction = None
                 self._timer.stop()    # 停止计时器
             else:
-                super(AvatarWidget, self).update()
+                super(LinkButton, self).update()
         elif self._direction == "anticlockwise":    # 逆时针
             # 360 -45 -90 -135 -180 -225 -270 -315 -360
             if self._rotate == 360:
@@ -69,33 +65,31 @@ class AvatarWidget(QLabel):
                 self._direction = None
                 self._timer.stop()
             else:
-                super(AvatarWidget, self).update()
+                super(LinkButton, self).update()
 
     def paintEvent(self, event):
         '''绘制事件'''
-        if not self._pixmap or self._pixmap.isNull():
-            return super(AvatarWidget, self).paintEvent(event)
-        painter = QPainter(self)
-        painter.setRenderHint(QPainter.Antialiasing, True)
-        ph = self._padding / 2
+        if not self._timer.isActive():
+            return super(LinkButton, self).paintEvent(event)
         if self._direction in ("clockwise", "anticlockwise"):
-            painter.translate(self.rect().center())    # 设置中心为旋转的中心
+            option = QStyleOptionButton()
+            self.initStyleOption(option)
+            option.text = ""  # 不让其绘制文字
+            painter = QStylePainter(self)
+            painter.drawControl(QStyle.CE_PushButton, option)
+            # 变换坐标为正中间
+            painter.translate(self.rect().center())
             painter.rotate(self._rotate)  # 旋转
-            # 绘制图片
-            painter.drawPixmap(
-                QPointF((-self.width() + self._padding) / 2, (-self.height() + self._padding) / 2), self._pixmap)
-            painter.translate(-self.rect().center())    # 将原点复位
-        else:
-            painter.drawPixmap(QPointF(ph, ph), self._pixmap)
-#         painter.setPen(  # 边框圆圈
-#             QPen(QColor(self._shadowColor), 5, Qt.SolidLine, Qt.RoundCap, Qt.RoundJoin))
-#         painter.drawRoundedRect(
-#             ph, ph, self._pixmap.width(),
-#             self._pixmap.height(), self._radius, self._radius)  # 画边框圆圈
-
-    def mouseReleaseEvent(self, event):
-        super(AvatarWidget, self).mouseReleaseEvent(event)
-        self.clicked.emit()
+            fm = self.fontMetrics()
+            # 在变换坐标后的正中间画文字
+            w = fm.width(self.text())
+            h = fm.height()
+            painter.drawText(
+                QRectF(0 - w * 2, 0 - h, w * 2 * 2, h * 2), Qt.AlignCenter,
+                self.text())
+            painter.setPen(Qt.red)
+            return
+        super(LinkButton, self).paintEvent(event)
 
     def enterEvent(self, event):
         '''鼠标进入事件'''
@@ -114,31 +108,6 @@ class AvatarWidget(QLabel):
         self._direction = "anticlockwise"    # 逆时针旋转
         self._timer.start(60)
 
-    def getImage(self)->str:
-        return self._image
-
-    def setPixmap(self, path: str)->None:
-        self._image = path
-        size = min(self.width(), self.height()) - self.padding  # 需要边距的边框
-        self._radius = int(size / 2)
-        self._pixmap = QPixmap(size, size)
-        self._pixmap.fill(Qt.transparent)  # 填充背景为透明
-        tmp = QPixmap(path).scaled(
-            size, size, Qt.KeepAspectRatioByExpanding, Qt.SmoothTransformation)
-        # QPainter
-        painter = QPainter()
-        painter.begin(self._pixmap)
-        painter.setRenderHint(QPainter.Antialiasing, True)
-        painter.setRenderHint(QPainter.SmoothPixmapTransform, True)
-        # QPainterPath
-        path = QPainterPath()
-        path.addRoundedRect(0, 0, size, size, self._radius, self._radius)
-        # 切割圆
-        painter.setClipPath(path)
-        painter.drawPixmap(0, 0, tmp)
-        painter.end()
-        del tmp
-
     def getPadding(self)->int:
         return self._padding
 
@@ -151,7 +120,6 @@ class AvatarWidget(QLabel):
     def setShadowColor(self, color: str):
         self._shadowColor = color
 
-    image = pyqtProperty(str, getImage, setPixmap)
     padding = pyqtProperty(int, getPadding, setPadding)
     shadowColor = pyqtProperty(str, getShadowColor, setShadowColor)
 
@@ -161,13 +129,15 @@ if __name__ == "__main__":
     import os
     os.chdir("../../")
     from PyQt5.QtWidgets import QApplication, QVBoxLayout
+    from PyQt5.QtGui import QFontDatabase
     app = QApplication(sys.argv)
+    QFontDatabase.addApplicationFont("themes/default/font.ttf")
     app.setStyleSheet(open("themes/default/style.qss",
                            "rb").read().decode("utf-8"))
     parent = QWidget(objectName="Widget",
-                     styleSheet="#Widget{background: white;}")
+                     styleSheet="#Widget{background: red;}")
     layout = QVBoxLayout(parent)
     layout.setContentsMargins(20, 20, 20, 20)
-    layout.addWidget(AvatarWidget())
+    layout.addWidget(LinkButton(parent, objectName="qqButton"))
     parent.show()
     sys.exit(app.exec_())

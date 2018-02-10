@@ -80,13 +80,67 @@ SearchWidget {
     max-height: 26px;
     border: none;
     color: white;
-    qproperty-bgcolor: #27AE61;
+    qproperty-bgColor: #27AE61;
     outline: none;
     font-family: "pyqtclient";
     qproperty-text: "\2104";
 }
-#searchBtn:hover {
-    qproperty-bgcolor: #279661;
+
+/*中间按钮链接*/
+LinkWidget {
+    min-width: 60px;
+    max-width: 60px;
+    background-color: rgb(38, 38, 38);
+}
+#groupButton1,#groupButton2,#qqButton,#weixinButton,#alipayButton {
+    min-width: 36px;
+    max-width: 36px;
+    min-height: 36px;
+    max-height: 36px;
+    border-radius: 18px;
+    border: none;
+    color: white;
+    outline: none;
+    font-family: "pyqtclient";
+    font-size: 20px;
+    background: #2E2E2E;
+    qproperty-shadowColor: #FFFFFF;
+}
+#groupButton1,#groupButton2 {
+    qproperty-text: "\2108";
+}
+#groupButton1:hover,#groupButton2:hover {
+    background: rgb(232, 76, 61);
+}
+#qqButton {
+    qproperty-text: "\2109";
+}
+#qqButton:hover {
+    background: rgb(255, 180, 97);
+}
+#weixinButton {
+    qproperty-text: "\2110";
+}
+#weixinButton:hover {
+    background: rgb(39, 174, 97);
+}
+#alipayButton {
+    qproperty-text: "\2111";
+}
+#alipayButton:hover {
+    background: rgb(14, 134, 174);
+}
+#upButton {
+    min-width: 36px;
+    max-width: 36px;
+    min-height: 36px;
+    max-height: 36px;
+    border: none;
+    color: white;
+    qproperty-bgColor: #27ae61;
+    outline: none;
+    font-family: "pyqtclient";
+    qproperty-text: "\2112";
 }
 
 /*右侧内容区域*/

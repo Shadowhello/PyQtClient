@@ -15,6 +15,7 @@ from PyQt5.QtWidgets import QWidget, QVBoxLayout, QHBoxLayout, QSpacerItem,\
 
 from Libraries.Widgets.ContentWidget import ContentWidget
 from Libraries.Widgets.MenuWidget import MenuWidget
+from Libraries.Widgets.LinkWidget import LinkWidget
 
 
 __Author__ = "By: Irony.\"[讽刺]\nQQ: 892768447\nEmail: 892768447@qq.com"
@@ -58,6 +59,7 @@ class MainWidget(QWidget):
         '''左侧菜单栏和右侧内容栏'''
         layout = QHBoxLayout()
         layout.addWidget(MenuWidget(self))
+        layout.addWidget(LinkWidget(self))
         layout.addWidget(ContentWidget(self))
         self.layout().addLayout(layout)
 

@@ -71,7 +71,7 @@ class RubberBandButton(QPushButton):
 #         wanimate.setKeyValueAt(0.2, 185)
 #         wanimate.setKeyValueAt(0.3, 190)
 #         wanimate.setKeyValueAt(0.4, 195)
-        wanimate.setKeyValueAt(0.5, self.minimumWidth())
+        wanimate.setKeyValueAt(0.5, self._width + 6)
 #         wanimate.setKeyValueAt(0.6, 195)
 #         wanimate.setKeyValueAt(0.7, 190)
 #         wanimate.setKeyValueAt(0.8, 185)
@@ -83,7 +83,7 @@ class RubberBandButton(QPushButton):
         hanimate.setKeyValueAt(0, self._height)
 #         hanimate.setKeyValueAt(0.1, 170)
 #         hanimate.setKeyValueAt(0.3, 165)
-        hanimate.setKeyValueAt(0.5, self._height - 15)
+        hanimate.setKeyValueAt(0.5, self._height - 6)
 #         hanimate.setKeyValueAt(0.7, 165)
 #         hanimate.setKeyValueAt(0.9, 170)
         hanimate.setKeyValueAt(1, self._height)
@@ -109,15 +109,15 @@ class RubberBandButton(QPushButton):
     def getHeight(self):
         return self._height
 
-    def getBgcolor(self):
+    def getBgColor(self):
         return self._bgcolor
 
-    def setBgcolor(self, color):
+    def setBgColor(self, color):
         self._bgcolor = color
 
     width = pyqtProperty(int, getWidth, setWidth)
     height = pyqtProperty(int, getHeight, setHeight)
-    bgcolor = pyqtProperty(str, getBgcolor, setBgcolor)
+    bgColor = pyqtProperty(str, getBgColor, setBgColor)
 
 
 if __name__ == "__main__":
@@ -134,7 +134,7 @@ if __name__ == "__main__":
         color: white;
         outline: none;
         margin: 4px;
-        qproperty-bgcolor: #ff0000;
+        qproperty-bgColor: #ff0000;
     }
     ''')
     w = QWidget()
