@@ -25,6 +25,7 @@ class AvatarWidget(QLabel):
 
     def __init__(self, *args, **kwargs):
         super(AvatarWidget, self).__init__(*args, **kwargs)
+        self.setCursor(Qt.PointingHandCursor)
         self._rotate = 0
         self._radius = 0
         self._step = 45

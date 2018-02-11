@@ -10,7 +10,7 @@ Created on 2018年2月9日
 @description: 
 '''
 from PyQt5.QtCore import QPropertyAnimation, QEasingCurve, pyqtProperty,\
-    QRectF, QParallelAnimationGroup
+    QRectF, QParallelAnimationGroup, Qt
 from PyQt5.QtGui import QPainter, QColor
 from PyQt5.QtWidgets import QPushButton, QStylePainter, QStyle,\
     QStyleOptionButton
@@ -26,6 +26,7 @@ class RubberBandButton(QPushButton):
     def __init__(self, *args, **kwargs):
         super(RubberBandButton, self).__init__(*args, **kwargs)
         self.setFlat(True)
+        self.setCursor(Qt.PointingHandCursor)
         self._width = 0
         self._height = 0
         self._bgcolor = "green"

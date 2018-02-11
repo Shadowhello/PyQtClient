@@ -85,6 +85,11 @@ SearchWidget {
     font-family: "pyqtclient";
     qproperty-text: "\2104";
 }
+MenuWidget QTreeWidget {
+    outline: none;
+    border: none;
+    background: transparent;
+}
 
 /*中间按钮链接*/
 LinkWidget {
@@ -106,26 +111,37 @@ LinkWidget {
     background: #2E2E2E;
     qproperty-shadowColor: #FFFFFF;
 }
-#groupButton1,#groupButton2 {
+#groupButton1 {
     qproperty-text: "\2108";
+    qproperty-url: "https://jq.qq.com/?_wv=1027&k=50LWvn9";
+    qproperty-toolTip: "PyQt & PySide";
+}
+#groupButton2 {
+    qproperty-text: "\2108";
+    qproperty-url: "https://jq.qq.com/?_wv=1027&k=5QVVEdF";
+    qproperty-toolTip: "PyQt学习互助";
 }
 #groupButton1:hover,#groupButton2:hover {
     background: rgb(232, 76, 61);
 }
 #qqButton {
     qproperty-text: "\2109";
+    qproperty-url: "tencent://message/?uin=892768447";
+    qproperty-toolTip: "QQ: 892768447";
 }
 #qqButton:hover {
     background: rgb(255, 180, 97);
 }
 #weixinButton {
     qproperty-text: "\2110";
+    qproperty-image: "Resources/weixin.png";
 }
 #weixinButton:hover {
     background: rgb(39, 174, 97);
 }
 #alipayButton {
     qproperty-text: "\2111";
+    qproperty-image: "Resources/zhifubao.png";
 }
 #alipayButton:hover {
     background: rgb(14, 134, 174);
@@ -147,4 +163,24 @@ LinkWidget {
 ContentWidget {
     min-width: 400px;
     background-color: rgb(208, 208, 208);
+}
+
+/*进度条*/
+QProgressBar {
+    min-height: 2px;
+    max-height: 2px;
+    border-color: transparent;
+    background-color: transparent;
+}
+QProgressBar::chunk {
+    background-color: rgb(255, 180, 97);
+}
+
+/*提示框*/
+QToolTip {
+    color: white;
+    border: 1px solid rgb(77, 77, 77);
+    border-radius: 5px;
+    opacity: 100;
+    background-color: rgb(77, 77, 77);
 }

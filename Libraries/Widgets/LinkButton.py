@@ -9,6 +9,8 @@ Created on 2018年2月10日
 @file: Libraries.Widgets.LinkButton
 @description: 
 '''
+import webbrowser
+
 from PyQt5.QtCore import QTimer, pyqtProperty, QRectF, Qt
 from PyQt5.QtGui import QColor
 from PyQt5.QtWidgets import QPushButton, QGraphicsDropShadowEffect, QWidget,\
@@ -24,10 +26,14 @@ class LinkButton(QPushButton):
 
     def __init__(self, *args, **kwargs):
         super(LinkButton, self).__init__(*args, **kwargs)
+        self.clicked.connect(self.onClicked)
+        self.setCursor(Qt.PointingHandCursor)
         self._rotate = 0
         self._radius = 0
         self._step = 45
         self._padding = 10
+        self._url = ""
+        self._image = ""
         self._shadowColor = "#FFFFFF"
         self._direction = None    # clockwise 顺时针 anticlockwise 逆时针
         self._timer = QTimer(self, timeout=self.update)
@@ -87,7 +93,6 @@ class LinkButton(QPushButton):
             painter.drawText(
                 QRectF(0 - w * 2, 0 - h, w * 2 * 2, h * 2), Qt.AlignCenter,
                 self.text())
-            painter.setPen(Qt.red)
             return
         super(LinkButton, self).paintEvent(event)
 
@@ -107,6 +112,10 @@ class LinkButton(QPushButton):
         self._timer.stop()
         self._direction = "anticlockwise"    # 逆时针旋转
         self._timer.start(60)
+    
+    def onClicked(self):
+        if self._url:
+            return webbrowser.open_new_tab(self._url)
 
     def getPadding(self)->int:
         return self._padding
@@ -120,8 +129,22 @@ class LinkButton(QPushButton):
     def setShadowColor(self, color: str):
         self._shadowColor = color
 
+    def getImage(self)->str:
+        return self._image
+
+    def setImage(self, image: str):
+        self._image = image
+
+    def getUrl(self)->str:
+        return self._url
+
+    def setUrl(self, url: str):
+        self._url = url
+
     padding = pyqtProperty(int, getPadding, setPadding)
     shadowColor = pyqtProperty(str, getShadowColor, setShadowColor)
+    image = pyqtProperty(str, getImage, setImage)
+    url = pyqtProperty(str, getUrl, setUrl)
 
 
 if __name__ == "__main__":

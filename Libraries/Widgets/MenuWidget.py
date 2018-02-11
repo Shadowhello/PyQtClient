@@ -10,7 +10,7 @@ Created on 2018年2月6日
 @description: 
 '''
 from PyQt5.QtCore import Qt
-from PyQt5.QtWidgets import QWidget, QGridLayout, QSpacerItem, QSizePolicy, QTreeWidget,\
+from PyQt5.QtWidgets import QWidget, QSpacerItem, QSizePolicy, QTreeWidget,\
     QVBoxLayout, QHBoxLayout
 
 from Libraries.Widgets.AvatarWidget import AvatarWidget
@@ -44,7 +44,15 @@ class MenuWidget(QWidget):
         # 搜索框
         layout.addWidget(SearchWidget(self),1)
         # 目录
-        layout.addWidget(QTreeWidget(self),4)
+        self._menuTree = QTreeWidget(self)
+        self._menuTree.setFrameShape(QTreeWidget.NoFrame)
+        self._menuTree.setVerticalScrollBarPolicy(Qt.ScrollBarAlwaysOff)
+        self._menuTree.setHorizontalScrollBarPolicy(Qt.ScrollBarAlwaysOff)
+        self._menuTree.setEditTriggers(QTreeWidget.NoEditTriggers)
+        self._menuTree.setIndentation(0)#去掉缩进
+        self._menuTree.setAnimated(True)
+        self._menuTree.setHeaderHidden(True)
+        layout.addWidget(self._menuTree,4)
 
 
 if __name__ == "__main__":
