@@ -9,13 +9,14 @@ Created on 2018年2月6日
 @file: Libraries.Widgets.MainWidget
 @description: 
 '''
-from PyQt5.QtCore import Qt
-from PyQt5.QtWidgets import QWidget, QVBoxLayout, QHBoxLayout, QSpacerItem,\
-    QSizePolicy, QPushButton, QProgressBar
+from PyQt5.QtCore import Qt, QEvent
+from PyQt5.QtWidgets import QWidget, QVBoxLayout, QHBoxLayout
 
 from Libraries.Widgets.ContentWidget import ContentWidget
-from Libraries.Widgets.MenuWidget import MenuWidget
+from Libraries.Widgets.FramelessWindow import FramelessWindow
 from Libraries.Widgets.LinkWidget import LinkWidget
+from Libraries.Widgets.MenuWidget import MenuWidget
+from Libraries.Widgets.TitleWidget import TitleWidget
 
 
 __Author__ = "By: Irony.\"[讽刺]\nQQ: 892768447\nEmail: 892768447@qq.com"
@@ -33,27 +34,21 @@ class MainWidget(QWidget):
         layout.setContentsMargins(0, 0, 0, 0)
         # 标题栏
         self._initTitleBar()
-        # 进度条
-        self._initProgressBar()
         # 左侧菜单栏和右侧内容栏
         self._initView()
 
+    def showNormalBtn(self, visible):
+        self._titleBar.showNormalBtn(visible)
+
     def _initTitleBar(self):
         '''标题栏'''
-        layout = QHBoxLayout()
-        # 左侧空白拉伸
-        layout.addItem(QSpacerItem(
-            20, 20, QSizePolicy.Expanding, QSizePolicy.Minimum))
-        layout.addWidget(QPushButton("", self, objectName="minimumButton"))
-        layout.addWidget(QPushButton("", self, objectName="maximumButton"))
-        layout.addWidget(QPushButton("", self, objectName="normalButton"))
-        layout.addWidget(QPushButton("", self, objectName="closeButton"))
-        self.layout().addLayout(layout)
-
-    def _initProgressBar(self):
-        '''进度条'''
-        self._progressBar = QProgressBar(self, textVisible=False)
-        self.layout().addWidget(self._progressBar)
+        parent = self.parent() or self.parentWidget() or self
+        self._titleBar = TitleWidget(self)
+        self._titleBar.minimized.connect(parent.showMinimized)
+        self._titleBar.maximized.connect(parent.showMaximized)
+        self._titleBar.normaled.connect(parent.showNormal)
+        self._titleBar.closed.connect(parent.close)
+        self.layout().addWidget(self._titleBar)
 
     def _initView(self):
         '''左侧菜单栏和右侧内容栏'''
@@ -62,6 +57,22 @@ class MainWidget(QWidget):
         layout.addWidget(LinkWidget(self))
         layout.addWidget(ContentWidget(self))
         self.layout().addLayout(layout)
+
+
+class MainWindow(FramelessWindow):
+
+    def __init__(self, *args, **kwargs):
+        super(MainWindow, self).__init__(*args, **kwargs)
+        layout = QVBoxLayout(self, spacing=0)
+        layout.setContentsMargins(0, 0, 0, 0)
+        self._mainWidget = MainWidget(self)
+        layout.addWidget(self._mainWidget)
+
+    def changeEvent(self, event):
+        super(MainWindow, self).changeEvent(event)
+        if event.type() == QEvent.WindowStateChange:
+            self._mainWidget.showNormalBtn(
+                self.windowState() == Qt.WindowMaximized)
 
 
 if __name__ == "__main__":
@@ -74,7 +85,7 @@ if __name__ == "__main__":
     QFontDatabase.addApplicationFont("themes/default/font.ttf")
     app.setStyleSheet(open("themes/default/style.qss",
                            "rb").read().decode("utf-8"))
-    w = MainWidget()
+    w = MainWindow()
     w.resize(800, 600)
     w.show()
     sys.exit(app.exec_())

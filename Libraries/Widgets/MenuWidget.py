@@ -26,6 +26,7 @@ class MenuWidget(QWidget):
 
     def __init__(self, *args, **kwargs):
         super(MenuWidget, self).__init__(*args, **kwargs)
+        self.setAttribute(Qt.WA_StyledBackground, True)
         # 初始化布局和控件
         self._initView()
 
@@ -40,19 +41,19 @@ class MenuWidget(QWidget):
         hlayout.addWidget(AvatarWidget(self))
         hlayout.addItem(QSpacerItem(
             40, 20, QSizePolicy.Expanding, QSizePolicy.Minimum))
-        layout.addLayout(hlayout,1)
+        layout.addLayout(hlayout, 1)
         # 搜索框
-        layout.addWidget(SearchWidget(self),1)
+        layout.addWidget(SearchWidget(self), 1)
         # 目录
         self._menuTree = QTreeWidget(self)
         self._menuTree.setFrameShape(QTreeWidget.NoFrame)
         self._menuTree.setVerticalScrollBarPolicy(Qt.ScrollBarAlwaysOff)
         self._menuTree.setHorizontalScrollBarPolicy(Qt.ScrollBarAlwaysOff)
         self._menuTree.setEditTriggers(QTreeWidget.NoEditTriggers)
-        self._menuTree.setIndentation(0)#去掉缩进
+        self._menuTree.setIndentation(0)  # 去掉缩进
         self._menuTree.setAnimated(True)
         self._menuTree.setHeaderHidden(True)
-        layout.addWidget(self._menuTree,4)
+        layout.addWidget(self._menuTree, 4)
 
 
 if __name__ == "__main__":

@@ -10,7 +10,7 @@ Created on 2018年2月6日
 @description: 
 '''
 from PyQt5.QtCore import Qt
-from PyQt5.QtWidgets import QWidget
+from PyQt5.QtWidgets import QWidget, QProgressBar, QVBoxLayout
 
 
 __Author__ = "By: Irony.\"[讽刺]\nQQ: 892768447\nEmail: 892768447@qq.com"
@@ -24,6 +24,14 @@ class ContentWidget(QWidget):
         super(ContentWidget, self).__init__(*args, **kwargs)
         # 保证qss有效
         self.setAttribute(Qt.WA_StyledBackground, True)
+        self._initView()
+
+    def _initView(self):
+        '''进度条'''
+        layout = QVBoxLayout(self, spacing=0)
+        layout.setContentsMargins(0, 0, 0, 0)
+        self._progressBar = QProgressBar(self, textVisible=False)
+        layout.addWidget(self._progressBar)
 
 
 if __name__ == "__main__":
