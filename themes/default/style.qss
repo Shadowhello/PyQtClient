@@ -121,12 +121,12 @@ LinkWidget {
 }
 #groupButton1 {
     qproperty-text: "\2108";
-    qproperty-url: "https://jq.qq.com/?_wv=1027&k=50LWvn9";
+    qproperty-url: "tencent://groupwpa/?subcmd=all&param=7B2267726F757055696E223A3134333036313734332C2274696D655374616D70223A313531383537333039377D0A";
     qproperty-toolTip: "PyQt & PySide";
 }
 #groupButton2 {
     qproperty-text: "\2108";
-    qproperty-url: "https://jq.qq.com/?_wv=1027&k=5QVVEdF";
+    qproperty-url: "tencent://groupwpa/?subcmd=all&param=7B2267726F757055696E223A3234363236393931392C2274696D655374616D70223A313531383537323831357D0A";
     qproperty-toolTip: "PyQt学习互助";
 }
 #groupButton1:hover,#groupButton2:hover {
