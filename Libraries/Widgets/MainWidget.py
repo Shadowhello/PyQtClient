@@ -17,6 +17,7 @@ from Libraries.Widgets.FramelessWindow import FramelessWindow
 from Libraries.Widgets.LinkWidget import LinkWidget
 from Libraries.Widgets.MenuWidget import MenuWidget
 from Libraries.Widgets.TitleWidget import TitleWidget
+from Libraries.Widgets.ToolTipWidget import ToolTipWidget
 
 
 __Author__ = "By: Irony.\"[讽刺]\nQQ: 892768447\nEmail: 892768447@qq.com"
@@ -158,6 +159,8 @@ class MainWindow(FramelessWindow):
         self._mainWidget = MainWidget(self)
         self._mainWidget.exited.connect(self.close)
         layout.addWidget(self._mainWidget)
+        # tooltip
+        ToolTipWidget.instance(self)
 
     def changeEvent(self, event):
         super(MainWindow, self).changeEvent(event)

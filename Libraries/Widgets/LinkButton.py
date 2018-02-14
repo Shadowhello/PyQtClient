@@ -11,10 +11,12 @@ Created on 2018年2月10日
 '''
 import webbrowser
 
-from PyQt5.QtCore import QTimer, pyqtProperty, QRectF, Qt
+from PyQt5.QtCore import QTimer, pyqtProperty, QRectF, Qt, QEvent, QRect
 from PyQt5.QtGui import QColor
 from PyQt5.QtWidgets import QPushButton, QGraphicsDropShadowEffect, QWidget,\
-    QStylePainter, QStyleOptionButton, QStyle
+    QStylePainter, QStyleOptionButton, QStyle, QApplication
+
+from Libraries.Widgets.ToolTipWidget import ToolTipWidget
 
 
 __Author__ = "By: Irony.\"[讽刺]\nQQ: 892768447\nEmail: 892768447@qq.com"
@@ -96,6 +98,11 @@ class LinkButton(QPushButton):
             return
         super(LinkButton, self).paintEvent(event)
 
+    def event(self, event):
+        if event.type() == QEvent.ToolTip:
+            return True  # 拦截Tooltip显示
+        return super(LinkButton, self).event(event)
+
     def enterEvent(self, event):
         '''鼠标进入事件'''
         self._effect.setColor(QColor(self._shadowColor))
@@ -104,6 +111,18 @@ class LinkButton(QPushButton):
         self._timer.stop()
         self._direction = "clockwise"    # 顺时针旋转
         self._timer.start(60)
+        parent = self.parent() or self.parentWidget() or self
+        mgeometry = self.geometry()  # 本身的位置
+        pgeometry = parent.geometry()  # 父控件的位置
+        geometry = QRect(mgeometry.x() + pgeometry.x(),
+                         mgeometry.y() + pgeometry.y() + 9,  # 9其实是类似的边距
+                         mgeometry.width(),
+                         mgeometry.height())
+        if self.toolTip():
+            ToolTipWidget.instance(None).show(geometry, self.toolTip())
+        elif self._image:
+            ToolTipWidget.instance(None).showImage(geometry, self._image)
+        del mgeometry,pgeometry,geometry
 
     def leaveEvent(self, event):
         '''鼠标离开事件'''
@@ -112,7 +131,8 @@ class LinkButton(QPushButton):
         self._timer.stop()
         self._direction = "anticlockwise"    # 逆时针旋转
         self._timer.start(60)
-    
+        ToolTipWidget.instance(None).hide()
+
     def onClicked(self):
         if self._url:
             return webbrowser.open_new_tab(self._url)
@@ -151,7 +171,7 @@ if __name__ == "__main__":
     import sys
     import os
     os.chdir("../../")
-    from PyQt5.QtWidgets import QApplication, QVBoxLayout
+    from PyQt5.QtWidgets import QVBoxLayout
     from PyQt5.QtGui import QFontDatabase
     app = QApplication(sys.argv)
     QFontDatabase.addApplicationFont("themes/default/font.ttf")
