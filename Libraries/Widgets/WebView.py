@@ -17,7 +17,7 @@ from PyQt5.QtWebEngineCore import QWebEngineUrlSchemeHandler,\
     QWebEngineUrlRequestJob
 from PyQt5.QtWebEngineWidgets import QWebEngineView, QWebEngineProfile,\
     QWebEngineSettings
-from PyQt5.QtWidgets import QWidget
+from PyQt5.QtWidgets import QWidget, QVBoxLayout, QProgressBar
 
 from Libraries import Config
 
@@ -152,27 +152,57 @@ class WebView(QWebEngineView):
         os.environ["QTWEBENGINE_REMOTE_DEBUGGING"] = str(port)
 
 
-class OAuthView(WebView):
+class WebWindow(QWidget):
 
     def __init__(self, *args, **kwargs):
-        super(OAuthView, self).__init__(*args, **kwargs)
+        super(WebWindow, self).__init__(*args, **kwargs)
+        self.setAttribute(Qt.WA_StyledBackground, True)
+        layout = QVBoxLayout(self, spacing=0)
+        layout.setContentsMargins(0, 0, 0, 0)
+        self._progressbar = QProgressBar(self, visible=False)
+        self._webview = WebView(self)
+        layout.addWidget(self._progressbar)
+        layout.addWidget(self._webview)
+        self._webview.closed.connect(self.close)
+        self._webview.loadStarted.connect(self.onLoadStarted)
+        self._webview.loadFinished.connect(self.onLoadFinished)
+        self._webview.loadProgress.connect(self._progressbar.setValue)
+
+    def onLoadStarted(self):
+        self._progressbar.setVisible(True)
+        self._progressbar.setValue(0)
+
+    def onLoadFinished(self):
+        self._progressbar.setValue(100)
+        self._progressbar.setVisible(False)
+
+
+class OAuthWindow(WebWindow):
+
+    def __init__(self, *args, **kwargs):
+        super(OAuthWindow, self).__init__(*args, **kwargs)
         self.setMaximumSize(500, 860)
         self.setMinimumSize(500, 860)
-        self.setWindowFlags(Qt.FramelessWindowHint)  # 去掉边框
+        self.setWindowFlags(Qt.FramelessWindowHint | Qt.Dialog)
         self.setContextMenuPolicy(Qt.NoContextMenu)  # 去掉右键菜单
+        self.setWindowModality(Qt.WindowModal)
+
+        self._webview.clearCookies()
+        self._webview.load(Config.LoginUrl)
+        self._webview.codeGeted.connect(lambda x: print("code:", x))
 
 
 if __name__ == "__main__":
     import sys
     import os
+    os.chdir("../../")
     from PyQt5.QtWidgets import QApplication
-    Config.CachePath = "../../tmp/tmp/cache"
-    Config.StoragePath = "../../tmp/tmp/storage"
+    Config.CachePath = "tmp/tmp/cache"
+    Config.StoragePath = "tmp/tmp/storage"
     app = QApplication(sys.argv)
-    OAuthView.initDevPort()
-    w = OAuthView()
-    w.clearCookies()
+    app.setStyleSheet(open("themes/default/style.qss",
+                           "rb").read().decode("utf-8"))
+    WebView.initDevPort()
+    w = OAuthWindow()
     w.show()
-    w.load(Config.LoginUrl)
-    w.codeGeted.connect(lambda x: print("code:", x))
     sys.exit(app.exec_())
