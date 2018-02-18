@@ -54,6 +54,7 @@ class FramelessWindow(QWidget):
     MARGIN_TOP = 4
     MARGIN_RIGHT = 4
     MARGIN_BOTTOM = 4
+    TITLE_WIDTH = 144
 
     def __init__(self, *args, **kwargs):
         super(FramelessWindow, self).__init__(*args, **kwargs)
@@ -117,7 +118,7 @@ class FramelessWindow(QWidget):
         return super(FramelessWindow, self).nativeEvent(eventType, message)
 
     def _setResult(self, xPos, yPos):
-        if self.MARGIN_TOP < yPos <= 36 + self.MARGIN_TOP and xPos < self.width() + self.MARGIN_LEFT - 108:
+        if self.MARGIN_TOP < yPos <= 36 + self.MARGIN_TOP and xPos < self.width() - self.MARGIN_LEFT - self.TITLE_WIDTH:
             # 标题栏区域
             return True, HTCAPTION
         if self.isMaximized() or self.isFullScreen():

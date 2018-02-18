@@ -1,5 +1,6 @@
 MainWidget {
     border-radius: 4px;
+    qproperty-minwidth: 750px;
 }
 
 /*标题栏*/
@@ -9,8 +10,8 @@ TitleWidget {
     border-top-left-radius: 4px;
 }
 
-/*标题栏中最小化,最大化,还原,关闭按钮*/
-#minimumButton,#maximumButton,#normalButton,#closeButton {
+/*标题栏中皮肤,最小化,最大化,还原,关闭按钮*/
+#skinButton,#minimumButton,#maximumButton,#normalButton,#closeButton {
     min-width: 36px;
     max-width: 36px;
     min-height: 36px;
@@ -19,13 +20,17 @@ TitleWidget {
     border: none; /*无边框*/
     background: transparent; /*背景透明*/
 }
-#minimumButton:hover,#maximumButton:hover,#normalButton:hover {
+#skinButton:hover,#minimumButton:hover,#maximumButton:hover,#normalButton:hover {
     color: white; /*文字白色*/
     background-color: rgba(255, 255, 255, 100); /*带透明度白色*/
 }
 #closeButton:hover {
     color: white;
     background-color: rgb(212, 64, 39); /*红色*/
+}
+#skinButton {
+    font-size: 20px;
+    qproperty-text: "\2104";
 }
 #minimumButton {
     qproperty-text: "\2100";
@@ -91,7 +96,7 @@ SearchWidget {
     qproperty-bgColor: #27AE61;
     outline: none;
     font-family: "pyqtclient";
-    qproperty-text: "\2104";
+    qproperty-text: "\5100";
 }
 MenuWidget QTreeWidget {
     outline: none;
@@ -120,12 +125,12 @@ LinkWidget {
     qproperty-shadowColor: #FFFFFF;
 }
 #groupButton1 {
-    qproperty-text: "\2108";
+    qproperty-text: "\4100";
     qproperty-url: "tencent://groupwpa/?subcmd=all&param=7B2267726F757055696E223A3134333036313734332C2274696D655374616D70223A313531383537333039377D0A";
     qproperty-toolTip: "PyQt & PySide";
 }
 #groupButton2 {
-    qproperty-text: "\2108";
+    qproperty-text: "\4100";
     qproperty-url: "tencent://groupwpa/?subcmd=all&param=7B2267726F757055696E223A3234363236393931392C2274696D655374616D70223A313531383537323831357D0A";
     qproperty-toolTip: "PyQt学习互助";
 }
@@ -133,7 +138,7 @@ LinkWidget {
     background: rgb(232, 76, 61);
 }
 #qqButton {
-    qproperty-text: "\2109";
+    qproperty-text: "\4101";
     qproperty-url: "tencent://message/?uin=892768447";
     qproperty-toolTip: "QQ: 892768447";
 }
@@ -141,14 +146,14 @@ LinkWidget {
     background: rgb(255, 180, 97);
 }
 #weixinButton {
-    qproperty-text: "\2110";
+    qproperty-text: "\4102";
     qproperty-image: "Resources/weixin.png";
 }
 #weixinButton:hover {
     background: rgb(39, 174, 97);
 }
 #alipayButton {
-    qproperty-text: "\2111";
+    qproperty-text: "\4103";
     qproperty-image: "Resources/zhifubao.png";
 }
 #alipayButton:hover {
@@ -164,12 +169,12 @@ LinkWidget {
     qproperty-bgColor: #27ae61;
     outline: none;
     font-family: "pyqtclient";
-    qproperty-text: "\2112";
+    qproperty-text: "\5101";
 }
 
 /*右侧内容区域*/
 ContentWidget {
-    min-width: 400px;
+    min-width: 180px;
     background-color: rgb(208, 208, 208);
     border-bottom-right-radius: 4px;
 }

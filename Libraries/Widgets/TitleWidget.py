@@ -42,6 +42,8 @@ class TitleWidget(QWidget):
         layout.addItem(QSpacerItem(
             20, 20, QSizePolicy.Expanding, QSizePolicy.Minimum))
         layout.addWidget(QPushButton(
+            "", self, objectName="skinButton"))
+        layout.addWidget(QPushButton(
             "", self, objectName="minimumButton", clicked=self.minimized.emit))
         self._maximumButton = QPushButton(
             "", self, objectName="maximumButton", clicked=self.maximized.emit)
