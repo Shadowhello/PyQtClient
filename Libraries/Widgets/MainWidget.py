@@ -62,7 +62,7 @@ class MainWidget(QWidget):
     def _initView(self):
         '''标题栏'''
         parent = self.parent() or self.parentWidget() or self
-        self._titleBar = TitleWidget(self)
+        self._titleBar = TitleWidget(parent=self)
         self._titleBar.minimized.connect(parent.showMinimized)
         self._titleBar.maximized.connect(parent.showMaximized)
         self._titleBar.normaled.connect(parent.showNormal)

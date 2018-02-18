@@ -201,3 +201,30 @@ ToolTipWidget {
     border-radius: 5px;
     background-color: rgba(77, 77, 77, 180);
 }
+
+/*主题选择对话框标题*/
+SkinWidget > TitleWidget > #iconLabel {
+    color: white;
+    margin-left: 10px;
+    font-family: "pyqtclient";
+    font-size: 20px;
+    qproperty-text: "\2104";
+}
+SkinWidget > TitleWidget > #titleLabel {
+    color: white;
+    qproperty-text: "主题选择";
+}
+
+/*主题预览项*/
+ThemeItem {
+    min-width: 160px;
+    max-width: 160px;
+    min-height: 180px;
+    max-height: 180px;
+}
+#imageLabel {
+    min-width: 160px;
+    max-width: 160px;
+    min-height: 160px;
+    max-height: 160px;
+}
