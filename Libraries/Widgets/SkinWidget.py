@@ -15,6 +15,7 @@ from PyQt5.QtWidgets import QGridLayout, QScrollArea, QWidget, QVBoxLayout, QLab
     QSpacerItem, QSizePolicy
 
 from Libraries.Widgets.TitleWidget import TitleWidget
+from Libraries.Widgets.FramelessWindow import FramelessWindow
 
 
 __Author__ = "By: Irony.\"[讽刺]\nQQ: 892768447\nEmail: 892768447@qq.com"
@@ -83,7 +84,9 @@ class GridWidget(QWidget):
         return [src[i:i + length] for i in range(len(src)) if i % length == 0]
 
 
-class SkinWidget(QWidget):
+class SkinWidget(FramelessWindow):
+    
+    TITLE_WIDTH = 36
 
     def __init__(self, *args, **kwargs):
         super(SkinWidget, self).__init__(*args, **kwargs)
