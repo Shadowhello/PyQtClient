@@ -9,13 +9,13 @@ Created on 2018年2月18日
 @file: Libraries.Widgets.SkinWidget
 @description: 
 '''
-from PyQt5.QtCore import Qt
+from PyQt5.QtCore import Qt, pyqtSignal
 from PyQt5.QtGui import QPixmap
 from PyQt5.QtWidgets import QGridLayout, QScrollArea, QWidget, QVBoxLayout, QLabel,\
-    QSpacerItem, QSizePolicy
+    QSpacerItem, QSizePolicy, QPushButton, QHBoxLayout
 
-from Libraries.Widgets.TitleWidget import TitleWidget
 from Libraries.Widgets.FramelessWindow import FramelessWindow
+from Libraries.Widgets.TitleWidget import TitleWidget
 
 
 __Author__ = "By: Irony.\"[讽刺]\nQQ: 892768447\nEmail: 892768447@qq.com"
@@ -24,6 +24,7 @@ __Version__ = "Version 1.0"
 
 
 class ThemeItem(QWidget):
+    '''网格中的自定义item'''
 
     def __init__(self, file, *args, **kwargs):
         super(ThemeItem, self).__init__(*args, **kwargs)
@@ -51,6 +52,7 @@ class ThemeItem(QWidget):
 
 
 class GridWidget(QWidget):
+    '''网格视图'''
 
     def __init__(self, *args, **kwargs):
         super(GridWidget, self).__init__(*args, **kwargs)
@@ -84,27 +86,97 @@ class GridWidget(QWidget):
         return [src[i:i + length] for i in range(len(src)) if i % length == 0]
 
 
+class PreviewImage(QWidget):
+    '''主题预览中的图片'''
+
+    def __init__(self, *args, **kwargs):
+        super(PreviewImage, self).__init__(*args, **kwargs)
+        layout = QHBoxLayout(self)
+        layout.addWidget(QPushButton(self, objectName="leftButton"))  # 上一个
+        layout.addItem(QSpacerItem(
+            40, 20, QSizePolicy.Expanding, QSizePolicy.Minimum))
+        self.imageLabel = QLabel(self)  # 图片
+        layout.addWidget(self.imageLabel)
+        layout.addItem(QSpacerItem(
+            40, 20, QSizePolicy.Expanding, QSizePolicy.Minimum))
+        layout.addWidget(QPushButton(self, objectName="rightButton"))  # 下一个
+
+    def setPixmap(self, path):
+        pixmap = QPixmap(path).scaled(self.imageLabel.size())
+        self.imageLabel.setPixmap(pixmap)
+
+
+class PreviewWidget(QWidget):
+    '''主题预览'''
+
+    choosed = pyqtSignal(str)
+    closed = pyqtSignal()
+
+    def __init__(self, *args, **kwargs):
+        super(PreviewWidget, self).__init__(*args, **kwargs)
+        self.setAttribute(Qt.WA_StyledBackground, True)
+        layout = QGridLayout(self)
+        self.previewImage = PreviewImage(self)
+        layout.addWidget(self.previewImage, 1, 0, 1, 3)  # 主题预览图片
+
+        layout.addItem(QSpacerItem(
+            40, 20, QSizePolicy.Expanding, QSizePolicy.Minimum), 2, 0)
+        self.titleLabel = QLabel(self, objectName="titleLabel")
+        self.titleLabel.setAlignment(Qt.AlignCenter)
+        layout.addWidget(self.titleLabel, 2, 1)  # 主题名字
+        layout.addItem(QSpacerItem(
+            40, 20, QSizePolicy.Expanding, QSizePolicy.Minimum), 2, 2)
+
+        layout.addWidget(QPushButton(
+            "立即设置", self, clicked=self.onChoosed, objectName="applyButton"), 3, 1)
+        layout.addWidget(QPushButton(
+            self, clicked=self.closed.emit, objectName="closeButton"), 4, 1)  # 关闭按钮
+
+    def init(self, title, path, spath):
+        self.titleLabel.setText(title)
+        self.previewImage.setPixmap(path)
+        self.spath = spath
+
+    def onChoosed(self):
+        self.choosed.emit(self.spath)
+
+
 class SkinWidget(FramelessWindow):
-    
+    '''主题窗口'''
+
     TITLE_WIDTH = 36
 
     def __init__(self, *args, **kwargs):
         super(SkinWidget, self).__init__(*args, **kwargs)
-        self.resize(800, 700)
         layout = QVBoxLayout(self, spacing=0)
         layout.setContentsMargins(0, 0, 0, 0)
-        layout.addWidget(TitleWidget(True, True, False, False,
-                                     False, False, True, parent=self))
+        self.titleWidget = TitleWidget(
+            True, True, False, False, False, False, True, parent=self)
+        self.titleWidget.closed.connect(self.close)
+        layout.addWidget(self.titleWidget)
         scrollWidget = QScrollArea(self)
         layout.addWidget(scrollWidget)
 
         scrollWidget.setFrameShape(QScrollArea.NoFrame)
         scrollWidget.setWidgetResizable(True)
         scrollWidget.setAlignment(Qt.AlignCenter)
+        scrollWidget.setVerticalScrollBarPolicy(Qt.ScrollBarAlwaysOn)
+        scrollWidget.setHorizontalScrollBarPolicy(Qt.ScrollBarAlwaysOff)
         # 网格窗口
         self._widget = GridWidget(scrollWidget)
         scrollWidget.setWidget(self._widget)
         self._widget.init("themes")
+        # 预览
+        self.previewWidget = PreviewWidget(self, visible=True)
+
+    def resizeEvent(self, event):
+        super(SkinWidget, self).resizeEvent(event)
+        geometry = self.titleWidget.geometry()
+        self.previewWidget.setGeometry(
+            geometry.x(),
+            geometry.y() + self.titleWidget.height(),
+            self.width() - 2 * geometry.x(),
+            self.height() - 2 * geometry.y() - self.titleWidget.height())
 
 
 if __name__ == "__main__":
@@ -115,8 +187,8 @@ if __name__ == "__main__":
     from PyQt5.QtGui import QFontDatabase
     app = QApplication(sys.argv)
     QFontDatabase.addApplicationFont("themes/default/font.ttf")
-    app.setStyleSheet(open("themes/default/style.qss",
-                           "rb").read().decode("utf-8"))
     w = SkinWidget()
+    w.setStyleSheet(open("themes/default/style.qss",
+                         "rb").read().decode("utf-8"))
     w.show()
     sys.exit(app.exec_())

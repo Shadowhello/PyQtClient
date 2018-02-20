@@ -202,6 +202,13 @@ ToolTipWidget {
     background-color: rgba(77, 77, 77, 180);
 }
 
+SkinWidget {
+    min-width: 870px;
+    max-width: 870px;
+    min-height: 600px;
+    max-height: 600px;
+    background: rgb(240, 240, 240);
+}
 /*主题选择对话框标题*/
 SkinWidget > TitleWidget > #iconLabel {
     color: white;
@@ -213,6 +220,13 @@ SkinWidget > TitleWidget > #iconLabel {
 SkinWidget > TitleWidget > #titleLabel {
     color: white;
     qproperty-text: "主题选择";
+}
+
+PreviewWidget {
+    background: rgba(255, 255, 255, 240);
+}
+PreviewImage {
+    min-height: 450px;
 }
 
 /*主题预览项*/
@@ -227,4 +241,132 @@ ThemeItem {
     max-width: 160px;
     min-height: 160px;
     max-height: 160px;
+}
+#leftButton,#rightButton,PreviewWidget > #closeButton {
+    min-width: 72px;
+    max-width: 72px;
+    min-height: 72px;
+    max-height: 72px;
+    color: rgb(209, 206, 208);
+    font-family: "pyqtclient";
+    font-size: 40px;
+    border: none; /*无边框*/
+    background: transparent; /*背景透明*/
+}
+#leftButton {
+    qproperty-text: "\5103";
+}
+#rightButton {
+    qproperty-text: "\5104";
+}
+#applyButton {
+    color: white;
+    font-size: 20px;
+    font-family: "微软雅黑";
+    min-height: 35px;
+    min-width: 100px;
+    border: none;
+    border-radius: 2px;
+    background: rgb(5, 186, 250);
+}
+#applyButton:hover {
+    background: rgb(40, 200, 252);
+}
+
+PreviewWidget > #closeButton {
+    qproperty-text: "\5102";
+    min-width: 100px;
+}
+
+PreviewWidget > #titleLabel {
+    font-size: 20px;
+    font-family: "微软雅黑";
+}
+
+#leftButton:hover,#rightButton:hover,PreviewWidget > #closeButton:hover {
+    color: rgb(118, 119, 123);
+    background: transparent;
+}
+
+/*纵向滚动条*/
+QScrollBar:vertical {
+    background: rgb(240, 240, 240);
+    width: 10px;
+}
+
+/*纵向滚动条上面的滑块*/
+QScrollBar::handle:vertical {
+    background: rgba(0, 0, 0, 50);
+    width: 10px;
+    border-radius: 5px;
+    border: none;
+}
+/*当鼠标放到滚动条滑块上面时改变透明度实现颜色的深浅变化*/
+QScrollBar::handle:vertical:hover {
+    background: rgba(0, 0, 0, 100);
+}
+
+/*横向滚动条*/
+QScrollBar:horizontal {
+    background: rgb(240, 240, 240);
+    height: 10px;
+}
+/*横向滚动条上面的滑块*/
+QScrollBar::handle:horizontal {
+    background: rgba(0, 0, 0, 50);
+    height: 10px;
+    border-radius: 5px;
+    border: none;
+}
+QScrollBar::handle:horizontal:hover {
+    background: rgba(0, 0, 0, 100);
+}
+
+/*纵向滚动条下部分块*/
+QScrollBar::add-page:vertical {
+    width: 10px;
+    background: rgb(240, 240, 240);
+}
+/*纵向滚动条上面部分块*/
+QScrollBar::sub-page:vertical {
+    width: 10px;
+    background: rgb(240, 240, 240);
+}
+/*横向滚动条左部分块*/
+QScrollBar::sub-page:horizontal {
+    height: 10px;
+    background: rgb(240, 240, 240);
+}
+/*横向滚动条右部分块*/
+QScrollBar::add-page:horizontal {
+    height: 10px;
+    background: rgb(240, 240, 240);
+}
+/*纵向滚动条顶部三角形位置*/
+QScrollBar::sub-line:vertical {
+    height: 0px;
+    width: 10px;
+    background: rgb(240, 240, 240);
+    subcontrol-position: top;
+}
+/*纵向滚动条下面三角形部分*/
+QScrollBar::add-line:vertical {
+    height: 0px;
+    width: 10px;
+    background: rgb(240, 240, 240);
+    subcontrol-position: bottom;
+}
+/*横向滚动条左侧三角形位置*/
+QScrollBar::sub-line:horizontal {
+    height: 10px;
+    width: 0px;
+    background: rgb(240, 240, 240);
+    subcontrol-position: left;
+}
+/*横向滚动条右边的三角形部分*/
+QScrollBar::add-line:horizontal {
+    height: 10px;
+    width: 0px;
+    background: rgb(240, 240, 240);
+    subcontrol-position: right;
 }
