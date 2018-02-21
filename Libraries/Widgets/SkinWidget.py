@@ -12,7 +12,8 @@ Created on 2018年2月18日
 from PyQt5.QtCore import Qt, pyqtSignal
 from PyQt5.QtGui import QPixmap
 from PyQt5.QtWidgets import QGridLayout, QScrollArea, QWidget, QVBoxLayout, QLabel,\
-    QSpacerItem, QSizePolicy, QPushButton, QHBoxLayout
+    QSpacerItem, QSizePolicy, QPushButton, QHBoxLayout,\
+    QGraphicsDropShadowEffect
 
 from Libraries.Widgets.FramelessWindow import FramelessWindow
 from Libraries.Widgets.TitleWidget import TitleWidget
@@ -26,17 +27,22 @@ __Version__ = "Version 1.0"
 class ThemeItem(QWidget):
     '''网格中的自定义item'''
 
+    clicked = pyqtSignal(str, str, str)
+
     def __init__(self, file, *args, **kwargs):
         super(ThemeItem, self).__init__(*args, **kwargs)
         self.setAttribute(Qt.WA_StyledBackground, True)
         self.setCursor(Qt.PointingHandCursor)
+        self._file = file
         name = os.path.basename(os.path.dirname(file))
         self.setToolTip(name)
         layout = QVBoxLayout(self, spacing=5)
         layout.setContentsMargins(0, 0, 0, 0)
         self.imageLabel = QLabel(self, objectName="imageLabel")
         layout.addWidget(self.imageLabel)
-        layout.addWidget(QLabel(name, self))
+        nameLabel = QLabel(name, self)
+        nameLabel.setAlignment(Qt.AlignCenter)
+        layout.addWidget(nameLabel)
         self.image_path = os.path.join("themes", name, "preview.png")
 
     def resizeEvent(self, event):
@@ -47,15 +53,18 @@ class ThemeItem(QWidget):
         super(ThemeItem, self).resizeEvent(event)
 
     def mouseReleaseEvent(self, event):
-        print(event)
+        self.clicked.emit(self.toolTip(), self._file, self.image_path)
         super(ThemeItem, self).mouseReleaseEvent(event)
 
 
 class GridWidget(QWidget):
     '''网格视图'''
 
+    itemClicked = pyqtSignal(str, str, str)
+
     def __init__(self, *args, **kwargs):
         super(GridWidget, self).__init__(*args, **kwargs)
+        self.setAttribute(Qt.WA_StyledBackground, True)
         self._layout = QGridLayout(self, spacing=10)
         self._layout.setContentsMargins(10, 10, 10, 10)
 
@@ -70,7 +79,9 @@ class GridWidget(QWidget):
         style_files = self.splist(style_files, 5)
         for row, items in enumerate(style_files):
             for col, file in enumerate(items):
-                self._layout.addWidget(ThemeItem(file, self), row, col)
+                item = ThemeItem(file, self)
+                item.clicked.connect(self.itemClicked.emit)
+                self._layout.addWidget(item, row, col)
         length = len(style_files)
         if length == 0:
             return
@@ -92,17 +103,38 @@ class PreviewImage(QWidget):
     def __init__(self, *args, **kwargs):
         super(PreviewImage, self).__init__(*args, **kwargs)
         layout = QHBoxLayout(self)
-        layout.addWidget(QPushButton(self, objectName="leftButton"))  # 上一个
+        self.leftButton = QPushButton(
+            self, objectName="leftButton", cursor=Qt.PointingHandCursor, visible=False)
+        layout.addWidget(self.leftButton)  # 上一个
         layout.addItem(QSpacerItem(
             40, 20, QSizePolicy.Expanding, QSizePolicy.Minimum))
         self.imageLabel = QLabel(self)  # 图片
+        # 边缘阴影效果
+        effect = QGraphicsDropShadowEffect(self.imageLabel)
+        effect.setBlurRadius(40)
+        effect.setOffset(0, 0)
+        effect.setColor(Qt.gray)
+        self.imageLabel.setGraphicsEffect(effect)
         layout.addWidget(self.imageLabel)
         layout.addItem(QSpacerItem(
             40, 20, QSizePolicy.Expanding, QSizePolicy.Minimum))
-        layout.addWidget(QPushButton(self, objectName="rightButton"))  # 下一个
+        self.rightButton = QPushButton(
+            self, objectName="rightButton", cursor=Qt.PointingHandCursor, visible=False)
+        layout.addWidget(self.rightButton)  # 下一个
 
-    def setPixmap(self, path):
-        pixmap = QPixmap(path).scaled(self.imageLabel.size())
+    def enterEvent(self, event):
+        super(PreviewImage, self).enterEvent(event)
+        self.leftButton.setVisible(True)
+        self.rightButton.setVisible(True)
+
+    def leaveEvent(self, event):
+        super(PreviewImage, self).leaveEvent(event)
+        self.leftButton.setVisible(False)
+        self.rightButton.setVisible(False)
+
+    def setPixmap(self, path, w, h):
+        pixmap = QPixmap(path).scaled(w, h)
+        self.imageLabel.resize(w, h)
         self.imageLabel.setPixmap(pixmap)
 
 
@@ -114,8 +146,10 @@ class PreviewWidget(QWidget):
 
     def __init__(self, *args, **kwargs):
         super(PreviewWidget, self).__init__(*args, **kwargs)
-        self.setAttribute(Qt.WA_StyledBackground, True)
+        self.setAttribute(Qt.WA_StyledBackground, True)  # 支持样式
         layout = QGridLayout(self)
+        layout.setVerticalSpacing(20)
+        layout.setContentsMargins(10, 10, 10, 30)
         self.previewImage = PreviewImage(self)
         layout.addWidget(self.previewImage, 1, 0, 1, 3)  # 主题预览图片
 
@@ -128,14 +162,15 @@ class PreviewWidget(QWidget):
             40, 20, QSizePolicy.Expanding, QSizePolicy.Minimum), 2, 2)
 
         layout.addWidget(QPushButton(
-            "立即设置", self, clicked=self.onChoosed, objectName="applyButton"), 3, 1)
+            "立即设置", self, clicked=self.onChoosed, objectName="applyButton", cursor=Qt.PointingHandCursor), 3, 1)
         layout.addWidget(QPushButton(
-            self, clicked=self.closed.emit, objectName="closeButton"), 4, 1)  # 关闭按钮
+            self, clicked=self.closed.emit, objectName="closeButton", cursor=Qt.PointingHandCursor), 5, 1)  # 关闭按钮
 
-    def init(self, title, path, spath):
+    def init(self, title, path, image):
         self.titleLabel.setText(title)
-        self.previewImage.setPixmap(path)
-        self.spath = spath
+        self.previewImage.setPixmap(image, int(
+            self.width() * 4 / 5), int(self.height() * 2 / 3) - 50)
+        self.spath = path
 
     def onChoosed(self):
         self.choosed.emit(self.spath)
@@ -165,12 +200,22 @@ class SkinWidget(FramelessWindow):
         # 网格窗口
         self._widget = GridWidget(scrollWidget)
         scrollWidget.setWidget(self._widget)
+        self._widget.itemClicked.connect(self.onItemClicked)
         self._widget.init("themes")
         # 预览
-        self.previewWidget = PreviewWidget(self, visible=True)
+        self.previewWidget = PreviewWidget(self, visible=False)
+
+    def onItemClicked(self, title, path, image):
+        if os.path.isfile(image):
+            self.resizePreviewWidget()
+            self.previewWidget.init(title, path, image)
+            self.previewWidget.setVisible(True)
 
     def resizeEvent(self, event):
         super(SkinWidget, self).resizeEvent(event)
+        self.resizePreviewWidget()
+
+    def resizePreviewWidget(self):
         geometry = self.titleWidget.geometry()
         self.previewWidget.setGeometry(
             geometry.x(),
